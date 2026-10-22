@@ -20,34 +20,51 @@ class ext extends base
 	const EXT_NAME = 'sfpo';
 
 	/** @var phpBB check version */
-	const PHPBB_VERSION = '3.3.0';
+	const PHPBB_VERSION = '3.3.19';
 
 	/** @var PHP check version */
-	const PHP_VERSION = '7.4';
+	const PHP_VERSION = '8.3.36';
 
 	/**
-	 * Enable extension if phpBB and mbstring version requirement is met
+	 * Check whether the extension can be enabled.
+	 * The current phpBB and PHP version should meet or
+	 * exceed the minimum version required by this extension:
 	 *
-	 * @return bool
+	 * @return bool|array
 	 * @access public
 	 */
 	public function is_enableable()
 	{
-		$config = $this->container->get('config');
+		$enableable = $this->check_phpbb_version() && $this->check_php_version();
 
-		$language = $this->container->get('language');
-		$language->add_lang('ext_enable_error', 'rmcgirr83/'. self::EXT_NAME);
-
-		if (!(phpbb_version_compare($config['version'], self::PHPBB_VERSION, '>=')))
+		if (!$enableable)
 		{
-			trigger_error($language->lang('EXT_PHPBB_ERROR', self::PHPBB_VERSION, $config['version']), E_USER_WARNING);
+			$language = $this->container->get('language');
+			$language->add_lang('sfpo_install', 'rmcgirr83/sfpo');
+
+			return $language->lang('SFPO_NOT_ENABLEABLE');
 		}
 
-		if (!(phpbb_version_compare(PHP_VERSION, self::PHP_VERSION, '>=')))
-		{
-			trigger_error($language->lang('EXT_PHP_ERROR', self::PHP_VERSION, PHP_VERSION), E_USER_WARNING);
-		}
+		return $enableable;
+	}
 
-		return true;
+	/**
+	 * Require phpBB 3.3.19 due to several security fixes in the phpBB software.
+	 *
+	 * @return bool
+	 */
+	protected function check_phpbb_version()
+	{
+		return phpbb_version_compare(PHPBB_VERSION, '3.3.19', '>=');
+	}
+
+	/**
+	 * Requires PHP 8.3.36 due to security fixes.
+	 *
+	 * @return bool
+	 */
+	protected function check_php_version()
+	{
+		return PHP_VERSION_ID >= 80336;
 	}
 }
