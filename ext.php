@@ -23,7 +23,7 @@ class ext extends base
 	const PHPBB_VERSION = '3.3.19';
 
 	/** @var PHP check version */
-	const PHP_VERSION = '8.3.36';
+	const PHP_VERSION = '8.1.0';
 
 	/**
 	 * Check whether the extension can be enabled.
@@ -59,12 +59,12 @@ class ext extends base
 	}
 
 	/**
-	 * Requires PHP 8.3.36 due to security fixes.
+	 * Requires PHP 8.1.0 or later.
 	 *
 	 * @return bool
 	 */
 	protected function check_php_version()
 	{
-		return PHP_VERSION_ID >= 80336;
+		return PHP_VERSION_ID >= 80100;
 	}
 }
