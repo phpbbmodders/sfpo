@@ -16,5 +16,5 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'SFPO_NOT_ENABLEABLE' => 'Show First Post Only To Guest could not be enabled. It requires phpBB 3.3.19 or later and PHP 8.3.36 or later.',
+	'SFPO_NOT_ENABLEABLE' => 'Show First Post Only To Guest could not be enabled. It requires phpBB 3.3.19 or later and PHP 8.1 or later.',
 ));
